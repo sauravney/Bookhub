@@ -59,7 +59,7 @@ const ProfilePage = () => {
         const userId = decoded.id;
 
         const res = await axios.get(
-          `http://localhost:5000/api/auth/${userId}`,
+          `https://bookhub-sauravneys-projects.vercel.app/api/auth/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -112,7 +112,7 @@ const ProfilePage = () => {
     const token = localStorage.getItem("user");
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/auth/${currentUser.id}`,
+        `https://bookhub-sauravneys-projects.vercel.app/api/auth/${currentUser.id}`,
         data,
         {
           headers: {

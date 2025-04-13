@@ -1,19 +1,19 @@
 import express from "express";
 import Book from "../models/Book.js";
-import User from "../models/User.js"; // Import the User model
-import authenticateUser from "../middleware/auth.js"; // Import the authentication middleware
-import mongoose from "mongoose"; // Import mongoose for ObjectId conversion
+import User from "../models/User.js";
+import authenticateUser from "../middleware/auth.js";
+import mongoose from "mongoose";
 
 const router = express.Router();
 
 // Add a new book
 router.post("/", async (req, res) => {
   try {
-    const book = new Book(req.body); // Create a new book from request body
-    await book.save(); // Save the book to the database
-    res.status(201).json(book); // Respond with the newly created book
+    const book = new Book(req.body);
+    await book.save();
+    res.status(201).json(book);
   } catch (err) {
-    res.status(400).json({ error: err.message }); // Respond with error if something goes wrong
+    res.status(400).json({ error: err.message });
   }
 });
 
@@ -26,7 +26,7 @@ router.get("/:userId", async (req, res) => {
       return res.status(404).json({ message: "Books not found" });
     }
 
-    res.json(books); // Ensure this is an array of books
+    res.json(books);
   } catch (error) {
     console.error("Error fetching books:", error);
     res.status(500).json({ message: "Server error" });
@@ -36,10 +36,10 @@ router.get("/:userId", async (req, res) => {
 // Get all books
 router.get("/", async (req, res) => {
   try {
-    const books = await Book.find(); // Fetch all books from the database
-    res.json(books); // Respond with all books
+    const books = await Book.find();
+    res.json(books);
   } catch (err) {
-    res.status(500).json({ message: err.message }); // Respond with error if something goes wrong
+    res.status(500).json({ message: err.message });
   }
 });
 
@@ -47,42 +47,42 @@ router.get("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const updated = await Book.findByIdAndUpdate(req.params.id, req.body, {
-      new: true, // Return the updated book instead of the original
+      new: true,
     });
     if (!updated) {
-      return res.status(404).json({ message: "Book not found" }); // If book doesn't exist
+      return res.status(404).json({ message: "Book not found" });
     }
-    res.json(updated); // Respond with the updated book
+    res.json(updated);
   } catch (err) {
-    res.status(400).json({ error: err.message }); // Respond with error if something goes wrong
+    res.status(400).json({ error: err.message });
   }
 });
 
 // Delete a book
 router.delete("/:id", async (req, res) => {
   try {
-    const deleted = await Book.findByIdAndDelete(req.params.id); // Delete the book by id
+    const deleted = await Book.findByIdAndDelete(req.params.id);
     if (!deleted) {
-      return res.status(404).json({ message: "Book not found" }); // If book doesn't exist
+      return res.status(404).json({ message: "Book not found" });
     }
-    res.json({ message: "Book deleted" }); // Respond with success message
+    res.json({ message: "Book deleted" });
   } catch (err) {
-    res.status(500).json({ message: err.message }); // Respond with error if something goes wrong
+    res.status(500).json({ message: err.message });
   }
 });
 
 // Toggle rent status
 router.patch("/:id/toggle", async (req, res) => {
   try {
-    const book = await Book.findById(req.params.id); // Find the book by id
+    const book = await Book.findById(req.params.id);
     if (!book) {
-      return res.status(404).json({ message: "Book not found" }); // If book doesn't exist
+      return res.status(404).json({ message: "Book not found" });
     }
-    book.isRented = !book.isRented; // Toggle rent status
-    await book.save(); // Save the updated book
-    res.json(book); // Respond with the updated book
+    book.isRented = !book.isRented;
+    await book.save();
+    res.json(book);
   } catch (err) {
-    res.status(500).json({ message: err.message }); // Respond with error if something goes wrong
+    res.status(500).json({ message: err.message });
   }
 });
 router.post("/:bookId/save", authenticateUser, async (req, res) => {
@@ -111,19 +111,15 @@ router.post("/:bookId/save", authenticateUser, async (req, res) => {
 // GET - Fetch all saved books for the current user
 router.get("/saved-books/:userId", async (req, res) => {
   console.log("➡️  /saved-books route hit");
-
   try {
     const userId = req.params.userId;
-    console.log("🧑‍💻 User ID:", userId);
 
     if (!mongoose.Types.ObjectId.isValid(userId)) {
-      console.error("❌ Invalid User ID format");
       return res.status(400).json({ message: "Invalid user ID" });
     }
 
     const user = await User.findById(userId);
     if (!user) {
-      console.error("❌ User not found");
       return res.status(404).json({ message: "User not found" });
     }
 
@@ -137,14 +133,9 @@ router.get("/saved-books/:userId", async (req, res) => {
     const savedBookIds = user.savedBooks.map(
       (id) => new mongoose.Types.ObjectId(id)
     );
-    console.log("📚 Book IDs to fetch:", savedBookIds);
-
     const savedBooks = await Book.find({ _id: { $in: savedBookIds } });
-
-    console.log("✅ Saved Books found:", savedBooks.length);
     res.json(savedBooks);
   } catch (err) {
-    console.error("🔥 Error in /saved-books route:", err);
     res.status(500).json({ message: "Failed to fetch saved books" });
   }
 });

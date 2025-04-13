@@ -18,7 +18,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { BookOpen, UserCircle } from "lucide-react";
 import { toast } from "sonner"; // Optional toast for feedback
 
-const API_BASE_URL = "http://localhost:5000"; // replace with your backend base URL
+const API_BASE_URL = "https://bookhub-sauravneys-projects.vercel.app"; // replace with your backend base URL
 
 const registerSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),

@@ -51,11 +51,14 @@ const Dashboard = () => {
         const decoded: any = jwtDecode(token);
         const userId = decoded.id;
 
-        const res = await fetch(`http://localhost:5000/api/auth/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await fetch(
+          `https://bookhub-sauravneys-projects.vercel.app/api/auth/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!res.ok) throw new Error("Failed to fetch user");
 
@@ -84,7 +87,7 @@ const Dashboard = () => {
 
       try {
         const res = await fetch(
-          `http://localhost:5000/api/books/${currentUser.id}`,
+          `https://bookhub-sauravneys-projects.vercel.app/api/books/${currentUser.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -119,7 +122,7 @@ const Dashboard = () => {
         console.log("🪪 Token from localStorage:", token);
 
         const res = await fetch(
-          `http://localhost:5000/api/books/saved-books/${currentUser.id}`,
+          `https://bookhub-sauravneys-projects.vercel.app/api/books/saved-books/${currentUser.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`, // ✅ Send token like this
@@ -133,13 +136,6 @@ const Dashboard = () => {
         }
 
         const data = await res.json();
-        console.log("📚 Saved Books Data:", data);
-        setSavedBooks(
-          data.map((book: any) => ({
-            ...book,
-            id: book._id || book.id, // Ensure that each book has the correct id
-          }))
-        );
       } catch (err) {
         console.error("❌ Error fetching saved books:", err);
       }

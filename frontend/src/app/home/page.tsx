@@ -27,11 +27,14 @@ const HomePage = () => {
         const decoded: any = jwtDecode(token);
         const userId = decoded.id;
 
-        const res = await fetch(`http://localhost:5000/api/auth/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await fetch(
+          `https://bookhub-sauravneys-projects.vercel.app/api/auth/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!res.ok) throw new Error("Failed to fetch user");
 

@@ -87,14 +87,17 @@ export function BookForm({ currentUser, onAddBook }: BookFormProps) {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/api/books", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(bookWithOwner),
-      });
+      const response = await fetch(
+        "https://bookhub-sauravneys-projects.vercel.app/api/books",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(bookWithOwner),
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to add book");
 

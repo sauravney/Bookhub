@@ -54,9 +54,12 @@ const Browse = () => {
     const fetchBooks = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/books", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(
+          "https://bookhub-sauravneys-projects.vercel.app/api/books",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         const data = res.data;
         if (Array.isArray(data)) {
           setBooks(data);
@@ -78,9 +81,12 @@ const Browse = () => {
         const decoded: any = jwtDecode(token);
         const userId = decoded.id;
 
-        const res = await fetch(`http://localhost:5000/api/auth/${userId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await fetch(
+          `https://bookhub-sauravneys-projects.vercel.app/api/auth/${userId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         if (!res.ok) throw new Error("Failed to fetch user");
 
         const data = await res.json();
@@ -105,7 +111,7 @@ const Browse = () => {
 
       try {
         const savedBooksRes = await fetch(
-          `http://localhost:5000/api/books/saved-books`,
+          `https://bookhub-sauravneys-projects.vercel.app/api/books/saved-books`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -135,7 +141,7 @@ const Browse = () => {
 
       try {
         const savedBooksRes = await fetch(
-          `http://localhost:5000/api/books/saved-books/${currentUser.id}`,
+          `https://bookhub-sauravneys-projects.vercel.app/api/books/saved-books/${currentUser.id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -192,7 +198,7 @@ const Browse = () => {
     try {
       const token = localStorage.getItem("user");
       await axios.post(
-        `http://localhost:5000/api/books/${bookId}/save`,
+        `https://bookhub-sauravneys-projects.vercel.app/api/books/${bookId}/save`,
         { bookId },
         {
           headers: {
