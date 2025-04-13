@@ -55,7 +55,7 @@ const Browse = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          "https://bookhub-sauravneys-projects.vercel.app/api/books",
+          "https://bookhubb-jnsr.onrender.com/api/books",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -82,7 +82,7 @@ const Browse = () => {
         const userId = decoded.id;
 
         const res = await fetch(
-          `https://bookhub-sauravneys-projects.vercel.app/api/auth/${userId}`,
+          `https://bookhubb-jnsr.onrender.com/api/auth/${userId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -111,7 +111,7 @@ const Browse = () => {
 
       try {
         const savedBooksRes = await fetch(
-          `https://bookhub-sauravneys-projects.vercel.app/api/books/saved-books`,
+          `https://bookhubb-jnsr.onrender.com/api/books/saved-books`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -141,7 +141,7 @@ const Browse = () => {
 
       try {
         const savedBooksRes = await fetch(
-          `https://bookhub-sauravneys-projects.vercel.app/api/books/saved-books/${currentUser.id}`,
+          `https://bookhubb-jnsr.onrender.com/api/books/saved-books/${currentUser.id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -198,7 +198,7 @@ const Browse = () => {
     try {
       const token = localStorage.getItem("user");
       await axios.post(
-        `https://bookhub-sauravneys-projects.vercel.app/api/books/${bookId}/save`,
+        `https://bookhubb-jnsr.onrender.com/api/books/${bookId}/save`,
         { bookId },
         {
           headers: {
