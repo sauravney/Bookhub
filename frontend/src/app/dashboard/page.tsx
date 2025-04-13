@@ -41,10 +41,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("user");
-    if (!token) {
-      navigate("/");
-      return;
-    }
 
     const fetchUser = async () => {
       try {
@@ -114,18 +110,16 @@ const Dashboard = () => {
     }
   }, [currentUser]);
 
-  // Fetch saved books
+  // ✅ Fetch saved books and update state
   useEffect(() => {
     const fetchSavedBooks = async () => {
       try {
         const token = localStorage.getItem("user");
-        console.log("🪪 Token from localStorage:", token);
-
         const res = await fetch(
           `https://bookhubb-jnsr.onrender.com/api/books/saved-books/${currentUser.id}`,
           {
             headers: {
-              Authorization: `Bearer ${token}`, // ✅ Send token like this
+              Authorization: `Bearer ${token}`,
             },
             method: "GET",
           }
@@ -136,6 +130,12 @@ const Dashboard = () => {
         }
 
         const data = await res.json();
+        const mapped = data.map((book: any) => ({
+          ...book,
+          id: book._id || book.id,
+        }));
+
+        setSavedBooks(mapped); // ✅ Update savedBooks state
       } catch (err) {
         console.error("❌ Error fetching saved books:", err);
       }
@@ -144,7 +144,7 @@ const Dashboard = () => {
     if (currentUser) {
       fetchSavedBooks();
     }
-  }, [currentUser]); // Add currentUser as a dependency to trigger the effect when currentUser is set
+  }, [currentUser]);
 
   const handleAddBook = (newBook: Book) => {
     setBooks((prev) => [

@@ -113,6 +113,7 @@ router.get("/saved-books/:userId", async (req, res) => {
   console.log("➡️  /saved-books route hit");
   try {
     const userId = req.params.userId;
+    console.log("User ID:", userId);
 
     if (!mongoose.Types.ObjectId.isValid(userId)) {
       return res.status(400).json({ message: "Invalid user ID" });

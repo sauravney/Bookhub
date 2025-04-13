@@ -49,7 +49,7 @@ const Browse = () => {
     createdAt: Date;
   };
 
-  // Fetch books
+  // Fetch all books
   useEffect(() => {
     const fetchBooks = async () => {
       try {
@@ -73,14 +73,19 @@ const Browse = () => {
       }
     };
 
-    const fetchUserAndSavedBooks = async () => {
-      const token = localStorage.getItem("user");
-      if (!token) return;
+    fetchBooks();
+  }, []);
 
-      try {
-        const decoded: any = jwtDecode(token);
-        const userId = decoded.id;
+  // Decode user and fetch saved books
+  useEffect(() => {
+    const token = localStorage.getItem("user");
+    if (!token) return;
 
+    try {
+      const decoded: any = jwtDecode(token);
+      const userId = decoded.id;
+
+      const fetchUser = async () => {
         const res = await fetch(
           `https://bookhubb-jnsr.onrender.com/api/auth/${userId}`,
           {
@@ -95,70 +100,44 @@ const Browse = () => {
           name: data.name,
           role: data.role,
         });
+      };
 
-        await fetchSavedBooks(); // Fetch saved books on load
-      } catch (err) {
-        console.error("Error fetching user:", err);
-        localStorage.removeItem("user");
-        setCurrentUser(null);
-        navigate("/");
-      }
-    };
-
-    const fetchSavedBooks = async () => {
-      const token = localStorage.getItem("user");
-      if (!token) return;
-
-      try {
-        const savedBooksRes = await fetch(
-          `https://bookhubb-jnsr.onrender.com/api/books/saved-books`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        if (savedBooksRes.ok) {
-          const savedIds: string[] = await savedBooksRes.json();
-          setSavedBookIds(savedIds);
-        }
-      } catch (error) {
-        console.warn("Failed to fetch saved books");
-      }
-    };
-
-    fetchBooks();
-    fetchUserAndSavedBooks();
+      fetchUser();
+    } catch (err) {
+      console.error("Error decoding user:", err);
+      localStorage.removeItem("user");
+      setCurrentUser(null);
+    }
   }, []);
 
-  // Refetch saved books whenever a book is saved
+  // Fetch saved books after currentUser is set
   useEffect(() => {
-    const token = localStorage.getItem("user");
-    if (!token) return;
-
     const fetchSavedBooks = async () => {
       const token = localStorage.getItem("user");
-      if (!token) return;
+      if (!token || !currentUser?.id) return;
 
       try {
-        const savedBooksRes = await fetch(
+        const res = await fetch(
           `https://bookhubb-jnsr.onrender.com/api/books/saved-books/${currentUser.id}`,
           {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
-
-        if (savedBooksRes.ok) {
-          const savedBooks = await savedBooksRes.json();
-          console.log("Saved Books from backend:", savedBooks); // Debug log
-          setSavedBookIds(savedBooks.map((book) => book._id)); // Ensure to use the correct ID
+        if (res.ok) {
+          const savedBooks = await res.json();
+          setSavedBookIds(savedBooks.map((book: any) => book._id));
         }
       } catch (error) {
-        console.warn("Failed to fetch saved books");
+        console.warn("Failed to fetch saved books:", error);
       }
     };
 
-    fetchSavedBooks();
-  }, [savedBookIds.length]); // Refetch when a new book is added to savedBookIds
+    if (currentUser?.id) {
+      fetchSavedBooks();
+    }
+  }, [currentUser]);
 
   // Filters
   useEffect(() => {
@@ -206,7 +185,6 @@ const Browse = () => {
           },
         }
       );
-      // Add to local state
       setSavedBookIds((prev) =>
         prev.includes(bookId) ? prev : [...prev, bookId]
       );
