@@ -59,7 +59,7 @@ const ProfilePage = () => {
         const userId = decoded.id;
 
         const res = await axios.get(
-          `https://bookhub-sauravneys-projects.vercel.app/api/auth/${userId}`,
+          `https://bookhubb-jnsr.onrender.com/api/auth/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -112,7 +112,7 @@ const ProfilePage = () => {
     const token = localStorage.getItem("user");
     try {
       const res = await axios.put(
-        `https://bookhub-sauravneys-projects.vercel.app/api/auth/${currentUser.id}`,
+        `https://bookhubb-jnsr.onrender.com/api/auth/${currentUser.id}`,
         data,
         {
           headers: {

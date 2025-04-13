@@ -52,7 +52,7 @@ const Dashboard = () => {
         const userId = decoded.id;
 
         const res = await fetch(
-          `https://bookhub-sauravneys-projects.vercel.app/api/auth/${userId}`,
+          `https://bookhubb-jnsr.onrender.com/api/auth/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -87,7 +87,7 @@ const Dashboard = () => {
 
       try {
         const res = await fetch(
-          `https://bookhub-sauravneys-projects.vercel.app/api/books/${currentUser.id}`,
+          `https://bookhubb-jnsr.onrender.com/api/books/${currentUser.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -122,7 +122,7 @@ const Dashboard = () => {
         console.log("🪪 Token from localStorage:", token);
 
         const res = await fetch(
-          `https://bookhub-sauravneys-projects.vercel.app/api/books/saved-books/${currentUser.id}`,
+          `https://bookhubb-jnsr.onrender.com/api/books/saved-books/${currentUser.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`, // ✅ Send token like this

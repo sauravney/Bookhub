@@ -39,7 +39,7 @@ export function Navbar() {
         const userId = decoded.id;
 
         const res = await fetch(
-          `https://bookhub-sauravneys-projects.vercel.app/api/auth/${userId}`,
+          `https://bookhubb-jnsr.onrender.com/api/auth/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
