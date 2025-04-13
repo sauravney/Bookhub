@@ -1,0 +1,94 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 36 33% 97%;
+    --foreground: 20 14% 20%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 20 14% 20%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 14% 20%;
+
+    --primary: 26 35% 25%;
+    --primary-foreground: 26 100% 97%;
+
+    --secondary: 12 60% 85%;
+    --secondary-foreground: 20 14% 20%;
+
+    --muted: 12 20% 92%;
+    --muted-foreground: 20 7% 40%;
+
+    --accent: 356 62% 30%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 20 10% 85%;
+    --input: 20 10% 85%;
+    --ring: 26 35% 25%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 20 14% 10%;
+    --foreground: 26 15% 90%;
+
+    --card: 20 14% 12%;
+    --card-foreground: 26 15% 90%;
+
+    --popover: 20 14% 12%;
+    --popover-foreground: 26 15% 90%;
+
+    --primary: 26 35% 60%;
+    --primary-foreground: 26 10% 15%;
+
+    --secondary: 12 30% 25%;
+    --secondary-foreground: 26 15% 90%;
+
+    --muted: 12 20% 20%;
+    --muted-foreground: 26 10% 70%;
+
+    --accent: 356 62% 40%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 20 10% 25%;
+    --input: 20 10% 25%;
+    --ring: 26 35% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Literata', Georgia, serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif font-semibold;
+  }
+}
+
+@layer components {
+  .book-card {
+    @apply relative bg-card text-card-foreground rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300;
+  }
+  
+  .book-card::before {
+    content: '';
+    @apply absolute left-0 top-0 bottom-0 w-2 bg-book-burgundy;
+  }
+}
